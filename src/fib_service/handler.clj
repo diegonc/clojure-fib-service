@@ -3,6 +3,7 @@
             [compojure.route :as route]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
+            [ring.middleware.cors :refer [wrap-cors]]
             [fib-service.fibonacci :refer [fib fib-seq]]))
 
 (defroutes app-routes
@@ -13,4 +14,6 @@
 (def app
   (-> app-routes
       wrap-json-response
+      (wrap-cors :access-control-allow-origin [#".*"]
+                 :access-control-allow-methods [:get])
       (wrap-defaults api-defaults)))
