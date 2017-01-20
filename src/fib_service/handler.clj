@@ -8,7 +8,7 @@
 (defroutes app-routes
   (GET "/fib/:n" [n] {:body {:data (fib (Integer/valueOf n))}})
   (GET "/fib-seq/:n" [n] {:body {:data (fib-seq (Integer/valueOf n))}})
-  (route/not-found "Not Found"))
+  (route/not-found {:body {:error "Not Found"}}))
 
 (def app
   (-> app-routes
