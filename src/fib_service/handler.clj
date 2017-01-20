@@ -1,14 +1,19 @@
 (ns fib-service.handler
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
+            [compojure.coercions :refer [as-int]]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
             [ring.middleware.cors :refer [wrap-cors]]
             [fib-service.fibonacci :refer [fib fib-seq]]))
 
 (defroutes app-routes
-  (GET "/fib/:n" [n] {:body {:data (fib (Integer/valueOf n))}})
-  (GET "/fib-seq/:n" [n] {:body {:data (fib-seq (Integer/valueOf n))}})
+  (GET "/fib/:n"
+       [n :<< as-int]
+       {:body {:data (fib n)}})
+  (GET "/fib-seq/:n"
+       [n :<< as-int]
+       {:body {:data (fib-seq n)}})
   (route/not-found {:body {:error "Not Found"}}))
 
 (def app

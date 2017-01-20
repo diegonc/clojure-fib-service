@@ -14,6 +14,10 @@
       (is (= (:status response) 200))
       (is (= (:body response) "{\"data\":[0,1,1,2,3,5,8]}"))))
 
+  (testing "fib non-number shall return 404 status"
+    (let [response (app (mock/request :get "fib/j"))]
+      (is (= (:status response) 404))))
+
   (testing "not-found route"
     (let [response (app (mock/request :get "/invalid"))]
       (is (= (:status response) 404))
