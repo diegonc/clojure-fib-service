@@ -18,6 +18,20 @@
     (let [response (app (mock/request :get "fib/j"))]
       (is (= (:status response) 404))))
 
+  (testing "fib-seq shall accept a modulo query parameter"
+    (let [response (app (mock/request :get "/fib-seq/6" {:modulo 2}))]
+      (is (= (:status response) 200))))
+
+  (testing "fib-seq with modulo=n shall return fibonacci sequece modulo n"
+    (let [response (app (mock/request :get "/fib-seq/6" {:modulo 2}))]
+      (is (= (:status response) 200))
+      (is (= (:body response) "{\"data\":[0,1,1,0,1,1,0]}"))))
+
+  (testing "fib-seq shall ignore non-numeric modulos"
+    (let [response (app (mock/request :get "/fib-seq/6" {:modulo "n"}))]
+      (is (= (:status response) 200))
+      (is (= (:body response) "{\"data\":[0,1,1,2,3,5,8]}"))))
+
   (testing "not-found route"
     (let [response (app (mock/request :get "/invalid"))]
       (is (= (:status response) 404))
