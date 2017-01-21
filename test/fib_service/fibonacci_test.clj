@@ -23,7 +23,7 @@
       (is (= n 354224848179261915075))))
 
   (testing "fib of an absurdly big amount (show runtime)"
-    (let [n (log (time (fib 1000)))]
+    (let [n (log (time (fib 100000)))]
       ; whatever you say is ok
       (is (= n n)))))
 
